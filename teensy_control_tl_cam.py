@@ -1,15 +1,15 @@
 """
-tl_cam_control.py
+teensy_control_tl_cam.py
 ================================================================================
 2022/07/25 wi
     Start modifying from Sentech_camera_control.py
 ================================================================================
-    Function:
+Function:
     Intended to use Teledyne FLIR camera to capture movies, using Spinnaker SDK.
         Spinnnaker_2.7.0.128
         spinnaker_python-2.7.0.128-cp38-cp38-win_amd64
 
-    Create Python environment:
+Create Python environment:
     $ conda create --name spinnaker
 	$ conda activate spinnaker
     $ conda install python=3.8 anaconda
@@ -30,9 +30,9 @@ class camThread(threading.Thread):
     ################################################################################
     # camThread class for multi-threading camera acquisition
     ################################################################################
-    def __init__(self, previewName, camID, output_file, trig_mode=False, gain=1.0, fps=4, exposure=1000.0):
+    def __init__(self, camID, output_file, trig_mode=False, gain=1.0, fps=4, exposure=1000.0):
         threading.Thread.__init__(self)
-        self.previewName = previewName
+        self.previewName = camID[0]
         self.cam_id = camID[2]
         self.cam_type = camID[1]
         self.output_file = output_file
@@ -40,12 +40,6 @@ class camThread(threading.Thread):
         self.gain = gain
         self.exposure = exposure
         self.trig_mode = trig_mode
-        # self.freeRun = freeRun
-        # self.frExposure = frExposure
-        # self.fps = fps
-        # self.savePath = savePath
-        # self.gain_set = gain_set
-        # self.dgain_set = dgain_set
 
     def run(self):
         self.acquire_movie()
@@ -68,7 +62,7 @@ class camThread(threading.Thread):
             '-r': str(self.fps),
             '-vcodec': 'libx264',  # use the h.264 codec
             # '-crf': '0',           #set the constant rate factor to 0, which is lossless
-            # '-preset':'veryslow'   #the slower the better compression, in princple, try
+            # '-preset':'veryslow'   #the slower the better compression, in principle, try
             # other options see https://trac.ffmpeg.org/wiki/Encode/H.264
         }, inputdict={
             '-r': str(self.fps)
@@ -96,7 +90,6 @@ class camThread(threading.Thread):
             cap.set_pyspin_value("TriggerSource", "Line3")
 
         else:
-
             cap.set_pyspin_value("ExposureMode", "Timed")
             cap.set_pyspin_value("TriggerMode", "Off")
             # cap.set_pyspin_value("TriggerSource", "Line3")
@@ -152,14 +145,14 @@ class camThread(threading.Thread):
 
 def live_movie(gain=1.0, exposure=40000.0, fps=4, trig_mode=True):
 
-    camera_1_sn = ['Firefly FFY-U3-16S2C', 'color', '21040292']
-    camera_2_sn = ['Firefly FFY-U3-16S2M', 'bw', '20216234']
+    camera_1 = ['Firefly FFY-U3-16S2C', 'color', '21040292']
+    camera_2 = ['Firefly FFY-U3-16S2M', 'bw', '20216234']
 
-    thread1 = camThread('camera_1', camera_1_sn, 'camera_1.mp4',
+    thread1 = camThread(camera_1, 'camera_1.mp4',
                         trig_mode=trig_mode, gain=gain, fps=fps, exposure=exposure)
     thread1.start()
 
-    thread2 = camThread('camera_2', camera_2_sn, 'camera_2.mp4',
+    thread2 = camThread(camera_2, 'camera_2.mp4',
                         trig_mode=trig_mode, gain=gain, fps=fps, exposure=exposure)
     thread2.start()
 
