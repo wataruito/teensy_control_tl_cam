@@ -58,15 +58,16 @@ class camThread(threading.Thread):
         print("Starting " + self.previewName)
 
         # Prepare the video writer through skvideo.io
-        out = skvideo.io.FFmpegWriter(self.output_file, outputdict={
-            '-r': str(self.fps),
-            '-vcodec': 'libx264',  # use the h.264 codec
-            # '-crf': '0',           #set the constant rate factor to 0, which is lossless
-            # '-preset':'veryslow'   #the slower the better compression, in principle, try
-            # other options see https://trac.ffmpeg.org/wiki/Encode/H.264
-        }, inputdict={
-            '-r': str(self.fps)
-        })
+        if self.output_file != "":
+            out = skvideo.io.FFmpegWriter(self.output_file, outputdict={
+                '-r': str(self.fps),
+                '-vcodec': 'libx264',  # use the h.264 codec
+                # '-crf': '0',           #set the constant rate factor to 0, which is lossless
+                # '-preset':'veryslow'   #the slower the better compression, in principle, try
+                # other options see https://trac.ffmpeg.org/wiki/Encode/H.264
+            }, inputdict={
+                '-r': str(self.fps)
+            })
 
         # Initialize the camera
         cap = EasyPySpin.VideoCapture(self.cam_id)
@@ -124,7 +125,8 @@ class camThread(threading.Thread):
             img_show = frame
 
             # Append the frame to the video writer
-            out.writeFrame(frame)
+            if self.output_file != "":
+                out.writeFrame(frame)
             # Display the frame
             cv2.imshow(self.previewName, img_show)
             # key monitoring
@@ -136,23 +138,34 @@ class camThread(threading.Thread):
         if self.trig_mode:
             cap.set_pyspin_value("ExposureMode", "Timed")
             cap.set_pyspin_value("TriggerMode", "Off")
-
-        out.close()
+        if self.output_file != "":
+            out.close()
         cap.release()
         # cv2.destroyAllWindows()
         cv2.destroyWindow(self.previewName)
 
 
 def live_movie(gain=1.0, exposure=40000.0, fps=4, trig_mode=True):
+    # Note:
+    #   <gain> 0-48
+    #   <fps> is in the range of 1-59 and used as the frame rate of the movie file.
+    #       At 60, frame drops may occur.
+    #   <exposure> should be smaller than (1/fps * 1000000) in microseconds.
+    #   <trig_mode> is for triggering the camera
+    #       When trig_mode=False, need to set both exposure and gain.
+    #       When trig_mode=True, need to set only fps.
 
     camera_1 = ['Firefly FFY-U3-16S2C', 'color', '21040292']
     camera_2 = ['Firefly FFY-U3-16S2M', 'bw', '20216234']
 
-    thread1 = camThread(camera_1, 'camera_1.mp4',
+    cam_1_movie = 'cam_1.mp4'
+    cam_2_movie = 'cam_2.mp4'
+
+    thread1 = camThread(camera_1, cam_1_movie,
                         trig_mode=trig_mode, gain=gain, fps=fps, exposure=exposure)
     thread1.start()
 
-    thread2 = camThread(camera_2, 'camera_2.mp4',
+    thread2 = camThread(camera_2, cam_2_movie,
                         trig_mode=trig_mode, gain=gain, fps=fps, exposure=exposure)
     thread2.start()
 

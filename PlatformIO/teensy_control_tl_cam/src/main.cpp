@@ -71,8 +71,10 @@ void print_status()
     Serial.print(", fps: ");
     Serial.print(fps);
     Serial.print(", exposure: ");
-    Serial.print(exposure);
-    Serial.println(" s");
+    Serial.print(exposure * 1000.0);
+    Serial.print(" ms, cycle duration: ");
+    Serial.print(cycle_duration * 1000.0);
+    Serial.println(" ms");
 }
 
 // Check fps and exposure time are valid
@@ -82,8 +84,7 @@ bool check_consistency(int _fps, float _exposure)
     if (_cycle_duration < _exposure)
     {
         Serial.println("Error: exposure time is longer than cycle duration");
-        Serial.println("       fps or exposure is reverted to the original value");
-        print_status();
+        Serial.println("       fps or exposure is automatically adjusted.");
         return false;
     }
     else
@@ -102,6 +103,7 @@ void set_cameraCallback(cmd *cmdPtr)
     {
         camera_on_set = true;
         // Serial.println(camera_on_set);
+        print_status();
     }
 
     arg = cmd.getArgument("stop");
@@ -129,15 +131,29 @@ void set_cameraCallback(cmd *cmdPtr)
             cycle_duration = 1.0 / float(fps);
             print_status();
         }
+        else
+        {
+            fps = _fps;
+            cycle_duration = 1.0 / float(fps);
+            exposure = cycle_duration * 0.5;
+            print_status();
+        }
     }
 
     arg = cmd.getArgument("exposure");
     float _exposure = arg.getValue().toFloat();
     if (_exposure != -1.0)
     {
-        if (check_consistency(fps, _exposure))
+        if (check_consistency(fps, _exposure / 1000.0))
         {
-            exposure = _exposure;
+            exposure = _exposure / 1000.0;
+            cycle_duration = 1.0 / float(fps);
+            print_status();
+        }
+        else
+        {
+            exposure = _exposure / 1000.0;
+            fps = int(1.0 / exposure);
             cycle_duration = 1.0 / float(fps);
             print_status();
         }
@@ -240,7 +256,6 @@ void interval_timer_callback()
     else
     {
         digitalWrite(PIN_CAM, LOW);
-        // digitalWrite(led, LOW);
         led_blink();
     }
 }
