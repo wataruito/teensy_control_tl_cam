@@ -8,11 +8,11 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "c:/Users/User/Desktop/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/include",
-                "c:/Users/User/Desktop/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/src",
-                "c:/Users/User/Desktop/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/lib/SimpleCLI/src",
+                "W:/wataru/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/include",
+                "W:/wataru/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/src",
+                "W:/wataru/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/lib/SimpleCLI/src",
                 "C:/Users/User/.platformio/packages/framework-arduinoteensy/cores/teensy3",
-                "c:/Users/User/Desktop/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/.pio/libdeps/teensy35/Unity/src",
+                "W:/wataru/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/.pio/libdeps/teensy35/Unity/src",
                 "C:/Users/User/.platformio/packages/framework-arduinoteensy/libraries/ADC",
                 "C:/Users/User/.platformio/packages/framework-arduinoteensy/libraries/AccelStepper/src",
                 "C:/Users/User/.platformio/packages/framework-arduinoteensy/libraries/Adafruit_NeoPixel",
@@ -117,11 +117,11 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "c:/Users/User/Desktop/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/include",
-                    "c:/Users/User/Desktop/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/src",
-                    "c:/Users/User/Desktop/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/lib/SimpleCLI/src",
+                    "W:/wataru/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/include",
+                    "W:/wataru/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/src",
+                    "W:/wataru/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/lib/SimpleCLI/src",
                     "C:/Users/User/.platformio/packages/framework-arduinoteensy/cores/teensy3",
-                    "c:/Users/User/Desktop/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/.pio/libdeps/teensy35/Unity/src",
+                    "W:/wataru/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/.pio/libdeps/teensy35/Unity/src",
                     "C:/Users/User/.platformio/packages/framework-arduinoteensy/libraries/ADC",
                     "C:/Users/User/.platformio/packages/framework-arduinoteensy/libraries/AccelStepper/src",
                     "C:/Users/User/.platformio/packages/framework-arduinoteensy/libraries/Adafruit_NeoPixel",
