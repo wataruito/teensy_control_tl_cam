@@ -13,12 +13,11 @@ Create Python environment:
     $ conda create --name spinnaker
 	$ conda activate spinnaker
     $ conda install python=3.8 anaconda
-    $ conda install -c conda-forge keyboard                                     # spinnaker test code requires keyboard
-    $ python  -m pip install spinnaker_python-2.x.x.x-cp3x-cp3x-win_amd64.whl   # install downloaded whl file
-    $ pip install opencv-contrib-python                                         # OpenCV
-    $ pip install scikit-video                                                  # for mp4 video output
-    $ pip install EasyPySpin                                                    # python wrapper of the wrapper for Spinnaker SDK
-    $ pip install pyserial                                                      # communicate with teensy via serial (Jupyter)
+    $ conda install -c conda-forge keyboard
+    $ python  -m pip install spinnaker_python-2.x.x.x-cp3x-cp3x-win_amd64.whl
+    $ pip install opencv-contrib-python
+    $ pip install scikit-video
+    $ pip install EasyPySpin
 """
 
 import EasyPySpin
@@ -42,9 +41,6 @@ class camThread(threading.Thread):
         self.exposure = exposure
         self.trig_mode = trig_mode
         self.new_gain = gain
-        self.new_exposure = exposure
-        self.new_fps = fps
-        self.camera_on = True
 
     def run(self):
         self.acquire_movie()
@@ -120,19 +116,10 @@ class camThread(threading.Thread):
         cv2.namedWindow(self.previewName)
 
         # Acquire movie
-        while self.camera_on:
+        while True:
             if self.gain != self.new_gain:
                 cap.set(cv2.CAP_PROP_GAIN, self.new_gain)
                 self.gain = self.new_gain
-
-            if ~self.trig_mode:
-                if self.exposure != self.new_exposure:
-                    cap.set(cv2.CAP_PROP_EXPOSURE, self.new_exposure)
-                    self.exposure = self.new_exposure
-
-                if self.fps != self.new_fps:
-                    cap.set(cv2.CAP_PROP_FPS, self.new_fps)
-                    self.fps = self.new_fps
 
             _ret, frame = cap.read()
 
