@@ -125,7 +125,7 @@ class camThread(threading.Thread):
                 cap.set(cv2.CAP_PROP_GAIN, self.new_gain)
                 self.gain = self.new_gain
 
-            if ~self.trig_mode:
+            if not self.trig_mode:
                 if self.exposure != self.new_exposure:
                     cap.set(cv2.CAP_PROP_EXPOSURE, self.new_exposure)
                     self.exposure = self.new_exposure
