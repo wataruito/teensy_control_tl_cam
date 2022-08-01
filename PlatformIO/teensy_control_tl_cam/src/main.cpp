@@ -235,7 +235,7 @@ void interval_timer_callback()
         // Serial.print("time_current_f: ");
         // Serial.println(time_current_f);
 
-        if (elapsed_time < cycle_duration)
+        if (elapsed_time <= cycle_duration)
         {
             if (elapsed_time < exposure)
             {
@@ -251,6 +251,8 @@ void interval_timer_callback()
         else
         {
             camera_on_start = micros();
+            digitalWrite(PIN_CAM, HIGH);
+            digitalWrite(PIN_LED, HIGH);
         }
     }
     else
