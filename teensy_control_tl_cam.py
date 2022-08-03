@@ -20,11 +20,12 @@ Create Python environment:
     $ pip install EasyPySpin                                                    # python wrapper of the wrapper for Spinnaker SDK
     $ pip install pyserial                                                      # communicate with teensy via serial (Jupyter)
 """
-
+from numba import jit
 import EasyPySpin
 import cv2
 import skvideo.io
 import threading
+import time
 
 
 class camThread(threading.Thread):
@@ -59,6 +60,7 @@ class camThread(threading.Thread):
     #       5. Acquire movie
     #       6. Clean up
     ################################################################################
+    @jit
     def acquire_movie(self):
         print("Starting " + self.previewName)
 
@@ -90,8 +92,8 @@ class camThread(threading.Thread):
             cap.set(cv2.CAP_PROP_GAIN, self.gain)
             print('gain: ', cap.get(cv2.CAP_PROP_GAIN))
 
-            # cap.set_pyspin_value("TriggerMode", "On")
-            cap.set_pyspin_value("ExposureMode", "TriggerWidth")
+            cap.set_pyspin_value("TriggerMode", "On")
+            # cap.set_pyspin_value("ExposureMode", "TriggerWidth")
             cap.set_pyspin_value("TriggerSelector", "FrameStart")
             cap.set_pyspin_value("TriggerSource", "Line3")
 
@@ -119,6 +121,11 @@ class camThread(threading.Thread):
         # Set up preview window
         cv2.namedWindow(self.previewName)
 
+        # For real-time fps calculation
+        prev_frame_time = 0
+        new_frame_time = 0
+        font = cv2.FONT_HERSHEY_SIMPLEX
+
         # Acquire movie
         while self.camera_on:
             if self.gain != self.new_gain:
@@ -139,6 +146,15 @@ class camThread(threading.Thread):
             # the color-space is BGR, so we need to change the color-space
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
+            # compute realtime fps
+            new_frame_time = time.time()
+            real_fps = 1/(new_frame_time-prev_frame_time)
+            prev_frame_time = new_frame_time
+            real_fps = int(real_fps)
+            real_fps = str(real_fps)
+            cv2.putText(frame, real_fps, (7, 70), font,
+                        3, (100, 255, 0), 3, cv2.LINE_AA)
+
             # img_show = cv2.resize(frame, None, fx=0.25, fy=0.25)
             img_show = frame
 
@@ -154,7 +170,7 @@ class camThread(threading.Thread):
 
         # Clean up
         if self.trig_mode:
-            cap.set_pyspin_value("ExposureMode", "Timed")
+            # cap.set_pyspin_value("ExposureMode", "Timed")
             cap.set_pyspin_value("TriggerMode", "Off")
         if self.output_file != "":
             out.close()

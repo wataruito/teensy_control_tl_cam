@@ -10,7 +10,6 @@
             "includePath": [
                 "c:/Users/User/Documents/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/include",
                 "c:/Users/User/Documents/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/src",
-                "c:/Users/User/Documents/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/lib/SimpleCLI/src",
                 "C:/Users/User/.platformio/packages/framework-arduinoteensy/cores/teensy3",
                 "c:/Users/User/Documents/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/.pio/libdeps/teensy35/Unity/src",
                 "C:/Users/User/.platformio/packages/framework-arduinoteensy/libraries/ADC",
@@ -119,7 +118,6 @@
                 "path": [
                     "c:/Users/User/Documents/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/include",
                     "c:/Users/User/Documents/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/src",
-                    "c:/Users/User/Documents/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/lib/SimpleCLI/src",
                     "C:/Users/User/.platformio/packages/framework-arduinoteensy/cores/teensy3",
                     "c:/Users/User/Documents/jupyter/teensy_control_tl_cam/PlatformIO/teensy_control_tl_cam/.pio/libdeps/teensy35/Unity/src",
                     "C:/Users/User/.platformio/packages/framework-arduinoteensy/libraries/ADC",

@@ -6,6 +6,7 @@
         "libx",
         "opencv",
         "outputdict",
+        "pyserial",
         "pyspin",
         "scikit",
         "Sentech",
